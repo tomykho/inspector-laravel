@@ -18,7 +18,7 @@ class DatabaseQueryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app['events']->listen(QueryExecuted::class, function (QueryExecuted $query) {
-            if (Inspector::canAddSegments()) {
+            if (Inspector::canAddSegments() && $query->sql) {
                 $this->handleQueryReport($query->sql, $query->bindings, $query->time, $query->connectionName);
             }
         });
@@ -35,7 +35,7 @@ class DatabaseQueryServiceProvider extends ServiceProvider
     protected function handleQueryReport($sql, array $bindings, $time, $connection)
     {
         $segment = Inspector::startSegment($connection, $sql)
-            ->start(microtime(true) - $time/1000);
+            ->start(\microtime(true) - $time/1000);
 
         $context = [
             'connection' => $connection,

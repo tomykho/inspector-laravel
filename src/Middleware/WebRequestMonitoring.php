@@ -85,7 +85,7 @@ class WebRequestMonitoring implements TerminableInterface
                     'charset' => $response->getCharset(),
                     'headers' => Filters::hideParameters($response->headers->all(), config('inspector.hidden_parameters')),
                 ])
-                ->addContext('Response Body', json_decode($response->getContent(), true))
+                ->addContext('Response Body', \json_decode($response->getContent(), true))
                 ->setResult($response->getStatusCode());
         }
         if (isset($_SERVER['LARAVEL_OCTANE'])) {
@@ -106,8 +106,8 @@ class WebRequestMonitoring implements TerminableInterface
         if ($route instanceof \Illuminate\Routing\Route) {
             $uri = $request->route()->uri();
         } else {
-            $array = explode('?', $_SERVER["REQUEST_URI"]);
-            $uri = array_shift($array);
+            $array = \explode('?', $_SERVER["REQUEST_URI"]);
+            $uri = \array_shift($array);
         }
 
         return $request->method() . ' ' . $this->normalizeUri($uri);
@@ -121,6 +121,6 @@ class WebRequestMonitoring implements TerminableInterface
      */
     protected function normalizeUri($uri)
     {
-        return '/' . trim($uri, '/');
+        return '/' . \trim($uri, '/');
     }
 }

@@ -29,7 +29,7 @@ class InspectorServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    const VERSION = '4.9.13';
+    const VERSION = '4.9.15';
 
     /**
      * Booting of services.
@@ -120,8 +120,8 @@ class InspectorServiceProvider extends ServiceProvider
         // Compatibility with Laravel < 8.4
         if (
             config('inspector.http_client', true) &&
-            class_exists('\Illuminate\Http\Client\Events\RequestSending') &&
-            class_exists('\Illuminate\Http\Client\Events\ResponseReceived')
+            \class_exists('\Illuminate\Http\Client\Events\RequestSending') &&
+            \class_exists('\Illuminate\Http\Client\Events\ResponseReceived')
         ) {
             $this->app->register(HttpClientServiceProvider::class);
         }
